@@ -1,0 +1,35 @@
+input, label {
+    display: block;
+}
+.container {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 0 auto;
+}
+.p-input-group {
+    display: inline-block;
+    padding: 0px 30px 0px 10px;
+    margin-left: 5%;
+    margin: 1% 2% 1% 2%;
+    width: 45%;
+}
+input {
+    max-width: 95%;
+}
+body {
+    justify-content: center;
+    display: flex;
+}
+.puntaje_left{
+    float: left;
+    margin-right: 10px;
+}
+.puntaje_right{
+    float: right;
+    margin-left: 10px;
+}
+
+.row {
+    overflow: hidden;
+    width: 100%;
+}
