@@ -8,17 +8,23 @@ import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { Nota } from './nota';
 import { Puntaje } from './data';
-import { checkVals } from './validatorxd';
+import { Router } from '@angular/router';
+
 @Component({
   // selector: 'app-root',
   standalone: true,
   imports: [CommonModule, InputTextModule, ButtonModule, InputSwitchModule, FormsModule, TableModule, ReactiveFormsModule, CardModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  templateUrl: './calc.component.html',
+  styleUrl: './calc.component.scss'
 })
 
-export class AppComponent implements OnInit {
+export class CalcComponent implements OnInit {
 
+  constructor( private router: Router) {}
+
+  goHome(){
+    this.router.navigate(['/home']);
+  }
 
   title = '🐊 Calculadora de notas ❤️';
   pForm:FormGroup = new FormGroup({}); 

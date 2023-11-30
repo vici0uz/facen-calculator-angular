@@ -1,0 +1,137 @@
+<main class="main">
+  <div class="container">
+    <p-card header="Modalidad Presencial">
+      <button label="Home" icon="pi pi-home" pButton (click)="goHome()"></button>
+      <div class="row" *ngIf="((sumatoria > 0))">
+        <div class="puntaje_left" >
+          <div
+            [ngStyle]="{'padding': '7% 0','text-align': 'center','backgroundColor':(acumulado>=50)? 'var(--green-400)':'var(--red-400)'}" *ngIf="((acumulado>0))">
+            <h3>Acumulado</h3>
+            <h1>
+              <h1>{{acumulado}}</h1>
+            </h1>
+          </div>
+          <div
+            [ngStyle]="{'padding':'5% 0', 'backgroundColor': (sumatoria==40) ? 'var(--green-400)': 'var(--yellow-300)'}">
+            <h3>Total pesos:{{sumatoria}}</h3>
+          </div>
+          <div *ngIf="tiene_firma" [ngStyle]="{'text-align': 'center', 'backgroundColor': 'var(--yellow-300)'}">
+            <span><b>{{no_firmas}} Firmas</b></span>
+          </div>
+        </div>
+        <div class="puntaje_right" *ngIf="tiene_firma">
+          <p-table [value]="tabla">
+            <ng-template pTemplate="caption">
+              <div class="table-header" [ngStyle]="{'overflow': 'hidden'}">
+                PUNTAJES EN EL EXAMEN FINAL
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Nota</th>
+                <th>Puntaje</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row>
+              <tr [ngStyle]="{'backgroundColor': (row.puntaje>100) ? 'var(--red-400)': 'var(--green-400)'}">
+                <td><b>{{row.nota}}</b></td>
+                <td>{{row.puntaje}}</td>
+              </tr>
+            </ng-template>
+
+          </p-table>
+        </div>
+      </div>
+      <form class="calc-form" [formGroup]="pForm" (input)="calculo()">
+        <div class="row">
+          <div class="p-input-group">
+            <label htmlFor="peso_examenes">Peso Examenes</label>
+            <input formControlName="peso_examenes" id="peso_examenes" type="number" pInputText required />
+            <div
+              *ngIf="pForm.errors?.['over40'] || pForm.controls['peso_examenes'].invalid && (pForm.controls['peso_examenes'].dirty || pForm.controls['peso_examenes'].touched)"
+              class="alert alert-danger">
+              <div *ngIf="pForm.controls['peso_examenes'].errors?.['required']">Requerido.</div>
+              <div *ngIf="pForm.errors?.['over40']">Debe ser menor a 40.</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="p-input-group" [style]="{ float: 'left' }">
+            <label htmlFor="puntaje_primer_parcial">Primer parcial</label>
+            <input type="number" id="puntaje_primer_parcial" pInputText formControlName="parcial1" required />
+            <div
+              *ngIf="pForm.controls['parcial1'].invalid && (pForm.controls['parcial1'].dirty || pForm.controls['parcial1'].touched)"
+              class="alert alert-danger">
+              <div *ngIf="pForm.controls['parcial1'].errors?.['required']">Requerido.</div>
+              <div *ngIf="pForm.controls['parcial1'].errors?.['plus100']">Debe ser menor a 100.</div>
+            </div>
+          </div>
+          <div class="p-input-group" [style]="{ float: 'rigth' }">
+            <label htmlFor="puntaje_segundo_parcial">Segundo parcial</label>
+            <input type="number" id="puntaje_segundo_parcial" pInputText formControlName="parcial2" />
+            <div
+              *ngIf="pForm.controls['parcial2'].invalid && (pForm.controls['parcial2'].dirty || pForm.controls['parcial2'].touched)"
+              class="alert alert-danger">
+              <div *ngIf="pForm.controls['parcial2'].errors?.['plus100']">Debe ser menor a 100.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="p-input-group">
+            <label [htmlFor]="tiene_tp">Trabajo Practico</label>
+            <p-inputSwitch formControlName="tiene_tp" name="tiene_tp" />
+          </div>
+        </div>
+        <div class="row" *ngIf="pForm.value.tiene_tp">
+          <div class="p-input-group" [style]="{ float: 'left' }">
+            <label htmlFor="peso_tp">Peso trabajo práctico</label>
+            <input type="number" formControlName="peso_tp" id="peso_tp" pInputText />
+            <div *ngIf="pForm.errors?.['over40']" class="alert alert-danger">
+              <div *ngIf="pForm.errors?.['over40']">Debe ser menor a 40.</div>
+            </div>
+          </div>
+          <div class="p-input-group">
+            <label htmlFor="puntaje_tp">Puntaje trabajo práctico</label>
+            <input type="number" id="puntaje_tp" pInputText formControlName="puntaje_tp" />
+            <div
+              *ngIf="pForm.controls['puntaje_tp'].invalid && (pForm.controls['puntaje_tp'].dirty || pForm.controls['puntaje_tp'].touched)"
+              class="alert alert-danger">
+              <div *ngIf="pForm.controls['puntaje_tp'].errors?.['plus100']">Debe ser menor a 100.</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="p-input-group">
+            <label [htmlFor]="tiene_participacion">Participación</label>
+            <p-inputSwitch formControlName="tiene_participacion" name="tiene_participacion"></p-inputSwitch>
+          </div>
+        </div>
+        <div class="row" *ngIf="pForm.value.tiene_participacion">
+          <div class="p-input-group">
+            <label htmlFor="peso_participacion">Peso Participación</label>
+            <input type="number" id="peso_participacion" pInputText formControlName="peso_participacion" />
+            <div *ngIf="pForm.errors?.['over40']" class="alert alert-danger">
+              <div *ngIf="pForm.errors?.['over40']">Debe ser menor a 40.</div>
+            </div>
+          </div>
+          <div class="p-input-group">
+            <label htmlFor="puntaje_participacion">Puntaje Participacion</label>
+            <input type="number" id="puntaje_participacion" pInputText formControlName="puntaje_participacion" />
+            <div
+              *ngIf="pForm.controls['puntaje_participacion'].invalid && (pForm.controls['puntaje_participacion'].dirty || pForm.controls['puntaje_participacion'].touched)"
+              class="alert alert-danger">
+              <div *ngIf="pForm.controls['puntaje_participacion'].errors?.['plus100']">Debe ser menor a
+                100.</div>
+            </div>
+          </div>
+        </div>
+
+
+      </form>
+      <div class="row" [ngStyle]="{'justify-content':'center'}">
+        <button pButton (click)="reset()">Reset</button>
+      </div>
+    </p-card>
+  </div>
+</main>
